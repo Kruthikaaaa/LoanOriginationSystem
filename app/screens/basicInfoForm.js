@@ -303,11 +303,10 @@
 
 
 import { View, Text, Image } from 'react-native'
-import { Header } from 'react-native/Libraries/NewAppScreen';
 
-import { CustomInput } from "../../components/formComponents/customInput";
+import  CustomInput  from "../../components/formComponents/customInput";
 import Dropdown from "../../components/formComponents/dropdown";
-// import RadioButton from "../../components/formComponents/customRadioButton";
+import RadioButton from "../../components/formComponents/customRadioButton";
 import {  ScrollView, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import React,{useState} from 'react'
 import { basicInfoFormData } from "../../components/formComponents/formData";
@@ -315,6 +314,8 @@ import Collapsible from 'react-native-collapsible';
 import { SelectList } from "react-native-dropdown-select-list";
 import { themeColor, lightThemeColor } from '../../constants/constants';
 import { DropdownIcon, DropupIcon } from '../../assets/images/assets';
+import Header from '../../components/customComponents/header';
+import { router } from 'expo-router';
 
 export default function BasicInfoForm() {
         const [validationErrors, setValidationErrors] = useState({});
@@ -334,6 +335,7 @@ export default function BasicInfoForm() {
     
 
     const onSubmit = async () => {
+        router.navigate('screens/kycScreen')
       
         console.log("Form data", formValues);
        
@@ -349,6 +351,7 @@ export default function BasicInfoForm() {
           try{
 
             console.log(formValues)
+            router.navigate('screens/kycScreen')
         
           }
           
@@ -392,8 +395,8 @@ export default function BasicInfoForm() {
     const renderFormElement = (element) => {
         const onSelectRadio = (item) => {
             setradioSelect(item.value);
-            setFormValues(prevFormValues => ({ ...prevFormValues, [element.name]: item.id})); 
-            console.log('Selected value:', item.id);
+            setFormValues(prevFormValues => ({ ...prevFormValues, [element.name]: item.value})); 
+            console.log('Selected value:', item.value);
         }
 
 
@@ -402,6 +405,28 @@ export default function BasicInfoForm() {
             setFormValues(prevFormValues => ({ ...prevFormValues,  [element.name]: item }));
             console.log(element.name, item);
         };
+        const handleInputChange = (name, value) => {
+            setFormValues((prevFormValues) => {
+              const updatedFormValues = { ...prevFormValues, [name]: value };
+        
+              // Perform dynamic validation for the changed field
+              const errors = { ...validationErrors };
+              const element = basicInfoFormData.elements.find((el) => el.name === name);
+        
+              if (element) {
+                if (element.isRequired && !value) {
+                  errors[name] = `${element.title} is required`;
+                } else if (element.validation && element.validation.regex && !element.validation.regex.test(value)) {
+                  errors[name] = element.validation.message;
+                } else {
+                  delete errors[name]; // Remove the error message if input is valid
+                }
+              }
+        
+              setValidationErrors(errors);
+              return updatedFormValues;
+            });
+          };
     
 
 
@@ -424,7 +449,8 @@ export default function BasicInfoForm() {
                         name={element.name}
                         rules={{ required: element.isRequired ? `${element.title} is required` : false }}
                         // errors={errors}
-                        onChange={(value) => setFormValues({ ...formValues, [element.name]: value })}
+                        // onChange={(value) => setFormValues({ ...formValues, [element.name]: value })}
+                        onChange={(value) => handleInputChange(element.name, value)}
                         value={formValues[element.name] || ''} 
                     />
                     
@@ -453,31 +479,31 @@ export default function BasicInfoForm() {
                 }}
                 data={element.dropdownData.map(item => ({ value: item.key, label: item.value }))}
                 save="value"
-                onSelect={() => handleSelect(selectedValue) } // Log selected values
+               onSelect={() => handleInputChange(element.name, selectedValue)} // Log selected values
             />
                     </View>
                     {/* {validationErrors[element.name] && <Text style={styles.errorMessage}>{validationErrors[element.name]}</Text>} */}
                     </View>
                 );
                
-                    // case 'RadioButton':
-                    //     return( 
-                    //       <View style = {styles.inputContainer}>
-                    //       <Text style={styles.label}>{element.title}{starMark}</Text>
+                    case 'RadioButton':
+                        return( 
+                          <View style = {styles.inputContainer}>
+                          <Text style={styles.label}>{element.title}{starMark}</Text>
                             
-                    //             <RadioButton style={styles.inputContainer}
-                    //                  onSelect={onSelectRadio}
-                    //                  SelectedData={selectedValue} 
-                    //                  disableLine={1}
-                    //                  value={selectedValue}
-                    //                  onChange={(onSelectRadio) => setFormValues({ ...formValues, [element.name]: onSelectRadio })}
-                    //                  data={basicInfoFormData}
-                    //                  title={element.title}
-                    //                  // Pass the data prop here
-                    //             />
-                    //             </View>
+                                <RadioButton style={styles.inputContainer}
+                                     onSelect={onSelectRadio}
+                                     SelectedData={selectedValue} 
+                                     disableLine={1}
+                                     value={selectedValue}
+                                     onChange={(onSelectRadio) => setFormValues({ ...formValues, [element.name]: onSelectRadio })}
+                                     data={basicInfoFormData}
+                                     title={element.title}
+                                     // Pass the data prop here
+                                />
+                                </View>
 
-                    //     )
+                        )
          
               
     };
@@ -485,8 +511,10 @@ export default function BasicInfoForm() {
   return (
     
     <View style={styles.cardContainer}>
+        {/* <Header title={"Basic Information"}/> */}
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 <View style={styles.card}>
+                    
                     <View style={styles.section}>
                         {Object.keys(isCollapsed).map((section, index) => (
                             <View key={index} style={styles.sectionContainer}>
@@ -550,7 +578,9 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         fontSize: 12,
         fontWeight: 'bold',
-        color:'#005D62'
+        color:'#005D62',
+        
+
     },
     error: {
         color: 'red',

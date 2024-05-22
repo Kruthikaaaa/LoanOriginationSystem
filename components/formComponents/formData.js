@@ -34,6 +34,7 @@ export const basicInfoFormData = {
         "name": "property_cost",
         "type": "TextInput",
         "title": "Property Cost",
+        "inputType":"numeric",
         "placeholder": "Enter the property cost",
         //"sectionName":"General"
         "order":3,
@@ -80,6 +81,7 @@ export const basicInfoFormData = {
       {
         "name": "mobile",
         "type": "TextInput",
+        "inputType":"phone",
         "title": "Mobile Number Of Applicant",
         "placeholder": "Enter Mobile Number",
         "isRequired":true,
@@ -208,6 +210,7 @@ export const basicInfoFormData = {
         "type": "TextInput",
         "title": "Gross/ Total Monthly Income",
         "placeholder": "Enter amount",
+        "inputType":"numeric",
          "isRequired":true,
          "order":12,
          "section":"Basic Information"
@@ -218,24 +221,35 @@ export const basicInfoFormData = {
       "name": "total_emi_paid_monthly",
       "type": "TextInput",
       "title": "Total EMI Paid Monthly For All Loans",
-      "inputType": "text",
-      "placeholder": "Select",
+      "inputType":"numeric",
+      "placeholder": "Total EMI Paid",
       "sectionName":"Forecast",
        "isRequired":true,
        "order":13,
        "section":"Basic Information"
      
   },
-   
       {
         "name": "retirement_age",
         "type":"TextInput",
         "title": "Retirement Age",
-        "inputType": "number",
-      "placeholder":"Enter Age",
+        "inputType": "numeric",
+         "placeholder":"Enter Age",
         "order":14,
         "section":"Basic Information"
-       
+      },
+      {
+        "name": "have_you_shortlisted_property",
+        "type":"RadioButton",
+        "title": "Have you shortlisted property?",
+        // "inputType": "numeric",
+        "radioData":[
+            {key:"yes", value:"Yes" },
+            {key:"no",value:"No"}
+
+        ],
+        "order":14,
+        "section":"Basic Information"
       },
 
      

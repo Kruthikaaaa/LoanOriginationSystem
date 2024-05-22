@@ -3,23 +3,23 @@ import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList } from "react
 
 import {  Selected, unSelected } from "../../assets/images/assets";
 export default function RadioButton({ onSelect, disableLine, title, value, data, rdata}) {
-  const radioButtonOptions = data.elements.find(element => element.type === 'RadioButton').rdata || rdata;
+  const radioButtonOptions = data.elements.find(element => element.type === 'RadioButton').radioData || rdata;
   const[selectedData, setSelectedData]=useState('');
  
   const renderItems = ({ item }) => {
     const selectHandler = () => {
-      setSelectedData(item);
-      onSelect(item); 
+      setSelectedData(item.key);
+      onSelect(item.key); 
     };
  
     return (
       <TouchableOpacity onPress={selectHandler} style={styles.radioButton}>
         <Text style={styles.radioLabel}>
-          {item.label}
+          {item.value}
         </Text>
         <Image
           style={styles.image}
-          source={selectedData && selectedData.label === item.label ? Selected : unSelected}
+          source={selectedData && selectedData.value === item.value ? Selected : unSelected}
           resizeMode="contain"
         />
       </TouchableOpacity>
