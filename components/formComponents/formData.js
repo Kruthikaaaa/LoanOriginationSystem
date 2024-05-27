@@ -264,5 +264,57 @@ export const basicInfoFormData = {
       },
 
   ]
-  }
+  };
+
+  export const detailedDataEntryData={
+    "elements":[
+         
+    {
+      "name": "property_located_city",
+      "type": "TextInput",
+      "title": "Property Located City",
+      "placeholder": "Property Located City",
+      "isRequired":true,
+      "order":15,
+      "section":"Basic Information"
+    },
+  ]
+
+}
+
+export const loanInformation={
+  "elements":[
+       
+  {
+    "name": "loan_type",
+    "type": "dropdown",
+    "title": "Loan type",
+    "placeholder": "Loan Type",
+    "isRequired":true,
+    "dropdownData": [
+      { key: "Home_loan", value: "Home_Loan" },
+      { key: "PLOT_LOAN", value: "PLOT_LOANS" },
+    ],
+    "order":1,
+    "section":"Loan Information"
+  },
+  {
+    "name": "transfer_outstanding_loan",
+    "type": "RadioButton",
+    "title": "Do you want to transfer outstanding loan from another Bank/Financial Institution:",
+    "isRequired":true,
+    "radioData":[
+      {key:"yes", value:"Yes" },
+      {key:"no",value:"No"}
+
+  ],
+    "order":2,
+    "section":"Basic Information"
+  },
+
+]
+
+}
+
+
    

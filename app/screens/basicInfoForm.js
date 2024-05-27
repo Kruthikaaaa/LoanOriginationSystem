@@ -318,7 +318,7 @@ import Header from '../../components/customComponents/header';
 import { router } from 'expo-router';
 
 export default function BasicInfoForm() {
-        const [validationErrors, setValidationErrors] = useState({});
+   const [validationErrors, setValidationErrors] = useState({});
     const [formValues, setFormValues] = useState([]);
     const [selectedValue, setSelectedValue] = useState(null); 
     const[radioSelect, setradioSelect]=useState(null);

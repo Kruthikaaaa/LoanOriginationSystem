@@ -3,6 +3,8 @@ import React from 'react'
 import LoginScreen from './screens/loginScreen'
 import BasicInfoForm from './screens/basicInfoForm'
 import KYCOptionsScreen from './screens/kycScreen'
+import DetailedDataEntry from './detailedDataEntry/ddeForm'
+import Page from './detailedDataEntry/page'
 
 export default function Index() {
   return (
@@ -10,6 +12,7 @@ export default function Index() {
       {/* <BasicInfoForm/> */}
       {/* <KYCOptionsScreen/> */}
       <LoginScreen/>
+ 
       
     </View>
   )
