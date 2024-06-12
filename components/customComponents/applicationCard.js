@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-// import Ionicons from 'react-native-vector-icons/Ionicons'; // Importing Ionicons
+import { Ionicons } from '@expo/vector-icons';
  
 const loans = [
-  { id: '1', applicantName: 'John Doe', loanType: 'Home Loan', status: 'Approved' },
-  { id: '2', applicantName: 'Jane Smith', loanType: 'Car Loan', status: 'Pending' },
-  { id: '3', applicantName: 'Mike Johnson', loanType: 'Personal Loan', status: 'Rejected' },
-  { id: '4', applicantName: 'Sachin S', loanType: 'Personal Loan', status: 'Pending' },
-];
- 
+    { id: '1',loanid: '1001', applicantName: 'Pratheksha Anand', loanType: 'Home Loan', status: 'Approved', location: 'Bangalore' },
+    { id: '2',loanid: '1002', applicantName: 'Mike Johnson', loanType: 'Personal Loan', status: 'Rejected', location: 'Delhi' },
+     { id: '3',loanid: '1003', applicantName: 'Jane Smith', loanType: 'Car Loan', status: 'Pending', location: 'Delhi' },
+   // { id: '4',loanid: '1004', applicantName: 'Sachin S', loanType: 'Personal Loan', status: 'Pending', location: 'Mumbai' },
+  ];
 const LoanSummaryCards = ({ onFilter }) => {
-  const noOfApplications = loans.length;
+  const noOfApplications = loans.length;  
   const pending = loans.filter(loan => loan.status === 'Pending').length;
   const approved = loans.filter(loan => loan.status === 'Approved').length;
   const rejected = loans.filter(loan => loan.status === 'Rejected').length;
@@ -18,25 +17,25 @@ const LoanSummaryCards = ({ onFilter }) => {
   return (
     <View style={styles.summaryContainer}>
       <TouchableOpacity style={styles.summaryItem} onPress={() => onFilter('All')}>
-        {/* <Ionicons name="list" size={30} color="#333" /> */}
+        <Ionicons name="list" size={30} color="#333" />
         <Text style={styles.summaryHeading}> All</Text>
         <Text style={styles.summaryValue}>{noOfApplications}</Text>
       </TouchableOpacity>
       <View style={styles.verticalLine} />
       <TouchableOpacity style={styles.summaryItem} onPress={() => onFilter('Pending')}>
-        {/* <Ionicons name="time" size={30} color="#FFA500" /> */}
+        <Ionicons name="time" size={30} color="#FFA500" />
         <Text style={styles.summaryHeading}>Pending</Text>
         <Text style={styles.summaryValue}>{pending}</Text>
       </TouchableOpacity>
       <View style={styles.verticalLine} />
       <TouchableOpacity style={styles.summaryItem} onPress={() => onFilter('Approved')}>
-        {/* <Ionicons name="checkmark-circle" size={30} color="#008000" /> */}
+        <Ionicons name="checkmark-circle" size={30} color="#008000" />
         <Text style={styles.summaryHeading}>Approved</Text>
         <Text style={styles.summaryValue}>{approved}</Text>
       </TouchableOpacity>
       <View style={styles.verticalLine} />
       <TouchableOpacity style={styles.summaryItem} onPress={() => onFilter('Rejected')}>
-        {/* <Ionicons name="close-circle" size={30} color="#FF0000" /> */}
+        <Ionicons name="close-circle" size={30} color="#FF0000" />
         <Text style={styles.summaryHeading}>Rejected</Text>
         <Text style={styles.summaryValue}>{rejected}</Text>
       </TouchableOpacity>
@@ -55,11 +54,32 @@ const LoanList = () => {
     }
   };
  
+  const getStatusBadgeStyle = (status) => {
+    switch (status) {
+      case 'Approved':
+        return styles.approvedBadge;
+      case 'Pending':
+        return styles.pendingBadge;
+      case 'Rejected':
+        return styles.rejectedBadge;
+      default:
+        return styles.defaultBadge;
+    }
+  };
+ 
   const renderItem = ({ item }) => (
+    
     <View style={styles.card}>
-      <Text style={styles.applicantName}>{item.applicantName}</Text>
+      <View style={styles.header}>
+        <Text style={styles.applicantName}>{item.applicantName}</Text>
+        <View style={[styles.badge, getStatusBadgeStyle(item.status)]}>
+          <Text style={styles.badgeText}>{item.status}</Text>
+        </View>
+      </View>
+      <View style={styles.horizontalLine} />
+      <Text style={styles.details}>Loan ID: {item.loanid}</Text>
       <Text style={styles.details}>Loan Type: {item.loanType}</Text>
-      <Text style={styles.details}>Status: <Text style={styles.status}>{item.status}</Text></Text>
+      <Text style={styles.details}>Location: {item.location}</Text>
     </View>
   );
  
@@ -78,8 +98,8 @@ const LoanList = () => {
  
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
+    // flex: 1,
+    backgroundColor: 'white',
   },
   summaryContainer: {
     flexDirection: 'row',
@@ -102,34 +122,42 @@ const styles = StyleSheet.create({
   summaryHeading: {
     fontSize: 14,
     fontWeight: 'bold',
-   
     color: '#333',
   },
   summaryValue: {
     fontSize: 20,
     fontWeight: 'bold',
-   
     color: '#008000',
   },
   listContainer: {
     padding: 20,
   },
   card: {
-    backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
     marginVertical: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
+    // shadowColor: '#000',
+    // shadowOpacity: 0.1,
+    // shadowRadius: 5,
+    // shadowOffset: { width: 0, height: 4 },
+    // elevation: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   applicantName: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 10,
+  },
+  horizontalLine: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 10,
   },
   details: {
     fontSize: 14,
@@ -139,6 +167,28 @@ const styles = StyleSheet.create({
   status: {
     fontWeight: 'bold',
     color: '#008000',
+  },
+  badge: {
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    borderRadius: 2,
+  },
+  badgeText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  approvedBadge: {
+    backgroundColor: '#008000',
+  },
+  pendingBadge: {
+    backgroundColor: '#FFA500',
+  },
+  rejectedBadge: {
+    backgroundColor: '#FF0000',
+  },
+  defaultBadge: {
+    backgroundColor: '#ccc',
   },
 });
  

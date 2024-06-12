@@ -4,7 +4,7 @@ import React from 'react'
 export default function Page() {
   return (
     <View>
-      <Text>jkkk bindu</Text>
+      <Text></Text>
     </View>
   )
 }

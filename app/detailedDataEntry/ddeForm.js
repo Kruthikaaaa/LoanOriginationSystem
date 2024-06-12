@@ -8,6 +8,7 @@ import { themeColor } from '../../constants/constants';
 import { DropdownIcon, DropupIcon } from '../../assets/images/assets';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { loanInformation } from '../../components/formComponents/formData';
+import Dropdown from '../../components/formComponents/dropdown';
 
 export default function DdeForm() {
   const [validationErrors, setValidationErrors] = useState({});
@@ -39,6 +40,8 @@ export default function DdeForm() {
   }, [params.data]);
 
   const onSubmit = async () => {
+    router.navigate('screens/kycScreen');
+    console.log(formValues)
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
@@ -81,8 +84,8 @@ export default function DdeForm() {
   const renderFormElement = (element) => {
     const onSelectRadio = (item) => {
       setRadioSelect(item.value);
-      setFormValues((prevFormValues) => ({ ...prevFormValues, [element.name]: item.value }));
-      console.log('Selected value:', item.value);
+      setFormValues((prevFormValues) => ({ ...prevFormValues, [element.name]: item }));
+      console.log('Selected value:', item);
     };
 
     const handleSelect = (item) => {
@@ -92,6 +95,7 @@ export default function DdeForm() {
     };
 
     const handleInputChange = (name, value) => {
+        console.log("name",name,value,"value")
       setFormValues((prevFormValues) => {
         const updatedFormValues = { ...prevFormValues, [name]: value };
         const errors = { ...validationErrors };
@@ -127,26 +131,20 @@ export default function DdeForm() {
               onChange={(value) => handleInputChange(element.name, value)}
               value={formValues[element.name] || ''}
             />
-          </View>
+          </View>  
+
+          
         );
 
       case 'dropdown':
         return (
           <View key={element.name} style={styles.inputContainer}>
             <Text style={styles.label}>{element.title}{starMark}</Text>
-            <SelectList
-              boxStyles={{
-                borderBottomWidth: 1,
-                borderBottomColor: '#ccc',
-                paddingVertical: 10,
-                paddingHorizontal: 10,
-                fontSize: 16,
-                borderWidth: 0,
-              }}
-              setSelected={(label) => setSelectedValue(label)}
-              data={element.dropdownData.map((item) => ({ value: item.key, label: item.value }))}
-              save="value"
-              onSelect={() => handleInputChange(element.name, selectedValue)}
+            <Dropdown
+              data={element.dropdownData}
+              selectedValue={selectedValue}
+              setSelectedValue={setSelectedValue}
+              handleSelect={(item) => handleInputChange(element.name, item)}
             />
           </View>
         );
@@ -219,6 +217,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5,
     marginBottom: 20,
+
   },
   scrollViewContainer: {
     paddingBottom: 20,
@@ -234,16 +233,16 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   inputContainer: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
   label: {
     marginBottom: 3,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 'bold',
     color: '#005D62',
   },
   error: {
-    color: 'red',
+    color: '#ce430b',
     marginBottom: 3,
     fontSize: 12,
   },

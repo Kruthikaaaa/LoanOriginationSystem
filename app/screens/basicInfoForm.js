@@ -335,7 +335,7 @@ export default function BasicInfoForm() {
     
 
     const onSubmit = async () => {
-        router.navigate('screens/kycScreen')
+        router.navigate('screens/panVerificationScreen')
       
         console.log("Form data", formValues);
        
@@ -430,7 +430,7 @@ export default function BasicInfoForm() {
     
 
 
-        const starMark = element.isRequired ? <Text style={{ color: 'red' }}> *</Text> : null;
+      const starMark = element.isRequired ? <Text style={{ color: 'red' }}> *</Text> : null;
 
 
         switch (element.type) {

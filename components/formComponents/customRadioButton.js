@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, FlatList } from "react-native"
 
-import {  Selected, unSelected } from "../../assets/images/assets";
+import {  Selected, UnSelected } from "../../assets/images/assets";
 export default function RadioButton({ onSelect, disableLine, title, value, data, rdata}) {
   const radioButtonOptions = data.elements.find(element => element.type === 'RadioButton').radioData || rdata;
   const[selectedData, setSelectedData]=useState('');
  
   const renderItems = ({ item }) => {
     const selectHandler = () => {
-      setSelectedData(item.key);
+      setSelectedData(item);
       onSelect(item.key); 
     };
  
@@ -19,7 +19,7 @@ export default function RadioButton({ onSelect, disableLine, title, value, data,
         </Text>
         <Image
           style={styles.image}
-          source={selectedData && selectedData.value === item.value ? Selected : unSelected}
+          source={selectedData && selectedData.value === item.value ? Selected : UnSelected}
           resizeMode="contain"
         />
       </TouchableOpacity>

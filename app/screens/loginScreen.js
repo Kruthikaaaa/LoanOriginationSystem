@@ -53,10 +53,10 @@ const LoginScreen = ({ navigation }) => {
  
    
       if (accessToken) {
-       router.replace('/detailedDataEntry/page')
+       router.replace('/screens/applicantsList')
       } else {
         Alert.alert("Incorrect username or password!")
-        router.replace('/detailedDataEntry/page')
+        router.replace('/screens/applicantsList')
       }
  
       setToken(token);
